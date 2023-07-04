@@ -7,5 +7,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="dd_home" />
+    <orderEntry type="module" module-name="sqlite" />
   </component>
 </module>

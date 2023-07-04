@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/../dd_home/.idea/dd_home.iml" filepath="$PROJECT_DIR$/../dd_home/.idea/dd_home.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/dd_home_rdev.iml" filepath="$PROJECT_DIR$/.idea/dd_home_rdev.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../Python/sqlite/.idea/sqlite.iml" filepath="$PROJECT_DIR$/../../Python/sqlite/.idea/sqlite.iml" />
     </modules>
   </component>
 </project>
