@@ -1,13 +1,24 @@
-import sqlite3
 import config
+import os
 
-
-def create_db(name: str, columns: list):
-    con = sqlite3.connect(name)
-    cur = con.cursor()
-
+# Add fucntionality to check if database exists. If so,
+# add warning. Also, watch out: db is actually created in config
+# file!
+def create_db_table(cursor, db_name: str, columns: list):
     columns_formatted = ", ".join(columns)
-    cur.execute(f"CREATE TABLE {name}_table ({columns_formatted})")
+    cursor.execute(f"CREATE TABLE {db_name}_table ({columns_formatted})")
 
 
-create_db(config.time_db.name, config.time_db.columns)
+def remove_db(db_name):
+    file_path = os.path.join(os.sep, "Users", "sbraende", "Documents",
+                 "Projects", "dd_home_rdev", db_name)
+    os.remove(file_path)
+
+
+# Create time_db
+create_db_table(config.time_db.cursor,
+          config.time_db.name,
+          config.time_db.columns
+          )
+
+remove_db(config.time_db.name)
