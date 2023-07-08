@@ -1,2 +1,2 @@
-# DigitalDouble of home. Raspberry server. 
-
+# Digital Double home setup. 
+Python program to write data to sqlite database. 

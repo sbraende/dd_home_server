@@ -1,10 +1,10 @@
-import main
+import server_functions as sf
 import config_db
 import time
 
-main.create_db(config_db.time_db.name, config_db.time_db.columns)
+sf.create_db(config_db.time_db.name, config_db.time_db.columns)
 
 while True:
-    main.write_time_data(config_db.time_db.name, "Sebby")
-    main.print_db(config_db.time_db.name)
+    sf.write_time_data(config_db.time_db.name, "Sebby")
+    sf.print_db(config_db.time_db.name)
     time.sleep(1)
