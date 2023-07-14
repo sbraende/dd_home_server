@@ -9,5 +9,9 @@ class Database:
         self.filename = self.name + ".db"
 
 
-# Config time_db:
+# Config time datebase:
 time_db = Database("time", ["datetime", "user"])
+
+# Config humidtemp database:
+ht_db = Database("humidtemp", 
+                ["datetime", "room", "temperature", "humidity"])

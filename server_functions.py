@@ -1,4 +1,6 @@
 import sqlite3
+import Adafruit_DHT
+
 from datetime import datetime
 
 
@@ -22,12 +24,23 @@ def get_date_time():
 def write_time_data(db_name, user):
     connection, cursor = get_db(db_name)
     data = (get_date_time(), user)
-    cursor.execute('INSERT INTO time_table (datetime, user) VALUES (?, ?)',
+    cursor.execute(f'INSERT INTO {db_name}_table (datetime, user) VALUES (?, ?)',
                    data)
     connection.commit()
 
 
+def write_ht_data(db_name, room):
+    connection, cursor = get_db(db_name)
+    sensor = Adafruit_DHT.DHT11
+    pin = 17
+    humidity, temperature = Adafruit_DHT.read(sensor, pin)
+    data = (get_date_time(), room, temperature, humidity)
+    cursor.execute(f'INSERT INTO {db_name}_table (datetime, room, temperature, humidity) VALUES (?, ?, ?, ?)',
+                   data)
+    connection.commit()
+    
+
 def print_db(db_name):
     connection, cursor = get_db(db_name)
-    result = cursor.execute("SELECT * FROM time_table")
+    result = cursor.execute(f"SELECT * FROM {db_name}_table")
     print(result.fetchall())
