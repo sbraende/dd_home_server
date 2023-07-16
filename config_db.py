@@ -13,5 +13,5 @@ class Database:
 time_db = Database("time", ["datetime", "user"])
 
 # Config humidtemp database:
-ht_db = Database("humidtemp", 
+humidtemp_db = Database("humidtemp", 
                 ["datetime", "room", "temperature", "humidity"])

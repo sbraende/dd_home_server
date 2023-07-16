@@ -1,12 +1,11 @@
 import sqlite3
 import Adafruit_DHT
-
 from datetime import datetime
+import time
 
 
 def create_db(db_name, columns):
     connection, cursor = get_db(db_name)
-    # If
     columns_formatted = ", ".join(columns)
     cursor.execute(f"CREATE TABLE {db_name}_table ({columns_formatted})")
 
@@ -29,16 +28,25 @@ def write_time_data(db_name, user):
     connection.commit()
 
 
-def write_ht_data(db_name, room):
+def write_humidtemp_data(db_name, room):
     connection, cursor = get_db(db_name)
     sensor = Adafruit_DHT.DHT11
     pin = 17
-    humidity, temperature = Adafruit_DHT.read(sensor, pin)
-    data = (get_date_time(), room, temperature, humidity)
-    cursor.execute(f'INSERT INTO {db_name}_table (datetime, room, temperature, humidity) VALUES (?, ?, ?, ?)',
-                   data)
-    connection.commit()
-    
+        
+    humidity, temperature = None, None
+    while True:
+        while humidity is None and temperature is None:
+            humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
+            print("Humidity and temp found")
+        else: 
+            data = (get_date_time(), room, temperature, humidity)
+            cursor.execute(f'INSERT INTO {db_name}_table (datetime, room, temperature, humidity) VALUES (?, ?, ?, ?)', data)
+            connection.commit()            
+            print(f"Written {data} to database")
+            time.sleep(10)
+            humidity, temperature = None, None
+            print("Reset h and t value")
+
 
 def print_db(db_name):
     connection, cursor = get_db(db_name)
