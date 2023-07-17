@@ -32,20 +32,20 @@ def write_humidtemp_data(db_name, room):
     connection, cursor = get_db(db_name)
     sensor = Adafruit_DHT.DHT11
     pin = 17
-        
-    humidity, temperature = None, None
+    
+    countdown_duration = 60 # Dont put lower than 30
+    
     while True:
-        while humidity is None and temperature is None:
-            humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
-            print("Humidity and temp found")
-        else: 
-            data = (get_date_time(), room, temperature, humidity)
-            cursor.execute(f'INSERT INTO {db_name}_table (datetime, room, temperature, humidity) VALUES (?, ?, ?, ?)', data)
-            connection.commit()            
-            print(f"Written {data} to database")
-            time.sleep(10)
-            humidity, temperature = None, None
-            print("Reset h and t value")
+        end_time = time.time() + countdown_duration
+        while time.time() < end_time:
+            humidity, temperature = Adafruit_DHT.read(sensor, pin)
+            time.sleep(2)
+            if humidity is not None and temperature is not None:
+                last_temperature, last_humidity = temperature, humidity
+        data = (get_date_time(), room, last_temperature, last_humidity)
+        cursor.execute(f'INSERT INTO {db_name}_table (datetime, room, temperature, humidity) VALUES (?, ?, ?, ?)', data)
+        print(f"Storing: {data} ,into {db_name}")
+        connection.commit() 
 
 
 def print_db(db_name):

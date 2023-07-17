@@ -3,6 +3,7 @@ import config_db
 import time
 
 # sf.create_db(config_db.time_db.name, config_db.time_db.columns)
+
 # sf.create_db(config_db.humidtemp_db.name, config_db.humidtemp_db.columns) 
 
 sf.write_humidtemp_data(config_db.humidtemp_db.name, "bedroom")
