@@ -3,7 +3,7 @@
 Using a Raspberry Pi with a DHT11, this program will log temperature and humidity data to a local sqlite database.
 
 Requires:
-- Raspberry Pi Raspberry OS connected with DHT11 sensor.
+- Raspberry Pi Raspberry OS connected with DHT11 sensor (hardcoded to GPIO datapin 17 at the moment).
 - Adafruit_DHT python library. 
 
 Install: 
