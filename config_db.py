@@ -1,7 +1,3 @@
-import os
-import sqlite3
-
-
 class Database:
     def __init__(self, db_name: str, columns: list):
         self.name = db_name
@@ -13,5 +9,5 @@ class Database:
 time_db = Database("time", ["datetime", "user"])
 
 # Config humidtemp database:
-humidtemp_db = Database("humidtemp", 
-                ["datetime", "room", "temperature", "humidity"])
+humidtemp_db = Database("humidtemp",
+                        ["datetime", "room", "temperature", "humidity"])
