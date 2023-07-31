@@ -1,2 +1,12 @@
+# Software user prefs
+/.idea/
+/.vscode/
+
+# Python bytecode cache
+__pycache__/
+*.pyc
+*.pyo
+
+# User data
 /humidtemp.db
 /room_id.txt
