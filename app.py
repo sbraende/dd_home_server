@@ -1,5 +1,6 @@
 import Adafruit_DHT
 import server_functions as sf
+import config_db
 from flask import Flask, jsonify
 
 app = Flask(__name__)
@@ -15,7 +16,9 @@ def get_data():
     sensor = Adafruit_DHT.DHT11
     pin = 17
     humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
-   
+    ext_temperature, ext_humidity, ext_weather = sf.get_weather(
+                                                    config_db.userdata["city"])
+
     room = open("room_id.txt", "r").read()
 
     data = {
@@ -23,6 +26,9 @@ def get_data():
         "room": room,
         "temprature": temperature,
         "humidity": humidity,
+        "ext_temperature": ext_temperature,
+        "ext_humidity": ext_humidity,
+        "ext_weather": ext_weather,
         "status": "ok",
     }
     return jsonify(data)

@@ -8,8 +8,7 @@ Requires:
 
 Install: 
 - In terminal type: `sudo pip3 install Adafruit_DHT`
-- Create a file called room_id.txt in the main project structure. Write the name of the room you are using the sensor/raspberry. 
-- Create a file called openweather_apikey.txt in the main project structure. Write down your api key from openweather.
+- In the config_db.py. Fill in the userdata fields on top of the document. Feel free to harcode the openweather_apikey or create a file in the project structure called "openweather_apikey.txt" and type in your personal api-key. You can get the api-key by regintering on https://openweathermap.org. 
 
 Run:
 - Start the program by running main.py
