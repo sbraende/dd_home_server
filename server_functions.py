@@ -3,6 +3,11 @@ import sqlite3
 import Adafruit_DHT
 from datetime import datetime
 import time
+import requests
+
+
+def get_room_id():
+    return open("room_id.txt", "r").read()
 
 
 def db_exits(db_name):
@@ -31,6 +36,22 @@ def get_date_time():
     return str(datetime.now())
 
 
+def get_weather(city):
+    base_url = "http://api.openweathermap.org/data/2.5/weather?"
+    api_key = open("openweather_apikey.txt", "r").read()
+    url = base_url + "appid=" + api_key + "&q=" + city
+    response = requests.get(url).json()
+    temprature = kelvin_to_celsius(response["main"]["temp"])
+    humidity = response["main"]["humidity"]
+    weather_main = response["weather"][0]["main"]
+    return temprature, humidity, weather_main
+
+
+def kelvin_to_celsius(kelvin):
+    celsius = kelvin - 273.15
+    return celsius
+
+
 def write_time_data(db_name, user):
     connection, cursor = get_db(db_name)
     data = (get_date_time(), user)
@@ -54,14 +75,17 @@ def write_humidtemp_data(db_name, columns, room):
         end_time = time.time() + countdown_duration
         last_temperature, last_humidity = 0.0, 0.0  # Init variables
         while time.time() < end_time:
-            humidity, temperature = Adafruit_DHT.read(sensor, pin)
+            humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
             time.sleep(2)
             if humidity is not None and temperature is not None:
                 last_temperature, last_humidity = temperature, humidity
-        data = (get_date_time(), room, last_temperature, last_humidity)
+        ext_temperature, ext_humidity, ext_weather = get_weather("Fornebu")
+        data = (get_date_time(), room, last_temperature, last_humidity,
+                ext_temperature, ext_humidity, ext_weather)
         cursor.execute(
             f"INSERT INTO {db_name}_table "
-            f"(datetime, room, temperature, humidity) VALUES (?, ?, ?, ?)",
+            f"(datetime, room, temperature, humidity, "
+            f"ext_temperature, ext_humidity, ext_weather) VALUES (?, ?, ?, ?, ?, ?, ?)",
             data,
         )
         print(f"Storing: {data} ,into {db_name}")
@@ -72,3 +96,5 @@ def print_db(db_name):
     connection, cursor = get_db(db_name)
     result = cursor.execute(f"SELECT * FROM {db_name}_table")
     print(result.fetchall())
+
+

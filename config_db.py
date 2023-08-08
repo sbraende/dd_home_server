@@ -1,3 +1,9 @@
+userdata = {
+    "city": "Fornebu",
+    "room_id": "livingroom",
+    "openweather_apikey": str(open("openweather_apikey.txt", "r").read())
+}
+
 class Database:
     def __init__(self, db_name: str, columns: list):
         self.name = db_name
@@ -10,4 +16,6 @@ time_db = Database("time", ["datetime", "user"])
 
 # Config humidtemp database:
 humidtemp_db = Database("humidtemp",
-                        ["datetime", "room", "temperature", "humidity"])
+                        ["datetime", "room", "temperature", "humidity",
+                         "ext_temperature", "ext_humidity", "ext_weather"])
+
