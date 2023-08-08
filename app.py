@@ -18,8 +18,7 @@ def get_data():
     humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
     ext_temperature, ext_humidity, ext_weather = sf.get_weather(
                                                     config_db.userdata["city"])
-
-    room = open("room_id.txt", "r").read()
+    room = config_db.userdata["room"]
 
     data = {
         "time": sf.get_date_time(),
