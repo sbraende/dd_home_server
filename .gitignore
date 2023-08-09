@@ -7,6 +7,6 @@
 *.pyc
 *.pyo
 
-# User data
-/humidtemp.db
-/openweather_apikey.txt
+# User files
+humidtemp.db
+openweather_apikey.txt
