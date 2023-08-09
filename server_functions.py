@@ -94,3 +94,5 @@ def print_db(db_name):
     connection, cursor = get_db(db_name)
     result = cursor.execute(f"SELECT * FROM {db_name}_table")
     print(result.fetchall())
+
+# print_db(config_db.humidtemp_db.name)
