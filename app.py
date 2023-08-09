@@ -1,7 +1,7 @@
-import Adafruit_DHT
-import server_functions as sf
-import config_db
 from flask import Flask, jsonify
+import Adafruit_DHT
+import config_db
+import server_functions as sf
 
 app = Flask(__name__)
 

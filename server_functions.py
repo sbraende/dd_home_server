@@ -1,9 +1,9 @@
 import os
 import sqlite3
-import Adafruit_DHT
 from datetime import datetime
 import time
 import requests
+import Adafruit_DHT
 import config_db
 
 
