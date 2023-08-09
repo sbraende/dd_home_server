@@ -11,4 +11,4 @@ Install:
 - In the config_db.py. Fill in the userdata fields on top of the document. Feel free to harcode the openweather_apikey or create a file in the project structure called "openweather_apikey.txt" and type in your personal api-key. You can get the api-key by regintering on https://openweathermap.org. 
 
 Run:
-- Start the program by running main.py
+- Start the program by running main.py. 
