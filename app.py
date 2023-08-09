@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello_world():
-    return "Hey, Seeb seb seb from Raspberry"
+    return "Hey from Raspberry"
 
 
 @app.route("/data")
@@ -31,6 +31,19 @@ def get_data():
         "status": "ok",
     }
     return jsonify(data)
+
+
+@app.route("/database")
+def get_database():
+    connection, cursor = sf.get_db(config_db.humidtemp_db.name)
+    cursor.execute(f"SELECT * FROM {config_db.humidtemp_db.name}_table")
+    data = cursor.fetchall()
+    columns_names = config_db.humidtemp_db.columns
+    response_data = {
+        "columns": columns_names,
+        "data": data 
+    }
+    return jsonify(response_data)
 
 
 if __name__ == "__main__":
