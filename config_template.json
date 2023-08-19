@@ -1,0 +1,7 @@
+{
+    "room": "roomname",
+    "host": "0.0.0.0",
+    "port": "5000",
+    "sensor_type": "DHT11",
+    "sensor_pin": 17
+}

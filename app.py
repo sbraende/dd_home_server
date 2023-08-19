@@ -1,50 +1,68 @@
+import json
 from flask import Flask, jsonify
 import Adafruit_DHT
-import config_db
-import server_functions as sf
 
 app = Flask(__name__)
 
+SENSOR_TYPES = {
+    "DHT11": Adafruit_DHT.DHT11,
+    "DHT12": Adafruit_DHT.DHT22,
+    "AM2302": Adafruit_DHT.AM2302
+}
 
-@app.route("/")
-def hello_world():
-    return "Hey from Raspberry"
+
+class Configuration():
+    def __init__(self, config_path):
+        with open(config_path) as config_file:
+            self.config = json.load(config_file)
+
+    def get_room(self):
+        return self.config["room"]
+    
+    def get_host(self):
+        return self.config["host"]
+    
+    def get_port(self):
+        return self.config["port"]
+    
+    def get_sensor_type(self):
+        return self.config["sensor_type"]
+    
+    def get_sensor_pin(self):
+        return self.config["sensor_pin"]
+
+
+config = Configuration("config.json")
+
+
+class Sensor():
+    def __init__(self, sensor_type, sensor_pin):
+        self.sensor_type = sensor_type
+        self.sensor_pin = sensor_pin
+    
+    def read_data(self):
+        if self.sensor_type in SENSOR_TYPES:
+            humidity, temperature = Adafruit_DHT.read_retry(SENSOR_TYPES[self.sensor_type], self.sensor_pin)
+            return humidity, temperature
+        else:
+            raise ValueError(f"Unsupported sensor type: {self.sensor_type}")
+
+
+my_sensor = Sensor(config.get_sensor_type(), config.get_sensor_pin())
 
 
 @app.route("/data")
 def get_data():
-    sensor = Adafruit_DHT.DHT11
-    pin = 17
-    humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
-    ext_temperature, ext_humidity, ext_weather = sf.get_weather(
-                                                    config_db.userdata["city"])
-    room = config_db.userdata["room"]
-
+    sensor = 
+    humidity, temperature = sensor.read_data()
+    room = config.get_room
     data = {
-        "time": sf.get_date_time(),
         "room": room,
         "temprature": temperature,
         "humidity": humidity,
-        "ext_temperature": ext_temperature,
-        "ext_humidity": ext_humidity,
-        "ext_weather": ext_weather,
-        "status": "ok",
     }
     return jsonify(data)
 
 
-@app.route("/database")
-def get_database():
-    connection, cursor = sf.get_db(config_db.humidtemp_db.name)
-    cursor.execute(f"SELECT * FROM {config_db.humidtemp_db.name}_table")
-    data = cursor.fetchall()
-    columns_names = config_db.humidtemp_db.columns
-    response_data = {
-        "columns": columns_names,
-        "data": data 
-    }
-    return jsonify(response_data)
-
-
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=5000, debug=True)
