@@ -18,16 +18,16 @@ class Configuration():
 
     def get_room(self):
         return self.config["room"]
-    
+
     def get_host(self):
         return self.config["host"]
-    
+
     def get_port(self):
         return self.config["port"]
-    
+
     def get_sensor_type(self):
         return self.config["sensor_type"]
-    
+
     def get_sensor_pin(self):
         return self.config["sensor_pin"]
 
@@ -39,30 +39,30 @@ class Sensor():
     def __init__(self, sensor_type, sensor_pin):
         self.sensor_type = sensor_type
         self.sensor_pin = sensor_pin
-    
+
     def read_data(self):
         if self.sensor_type in SENSOR_TYPES:
-            humidity, temperature = Adafruit_DHT.read_retry(SENSOR_TYPES[self.sensor_type], self.sensor_pin)
+            humidity, temperature = Adafruit_DHT.read_retry(SENSOR_TYPES
+                                                            [self.sensor_type],
+                                                            self.sensor_pin)
             return humidity, temperature
         else:
             raise ValueError(f"Unsupported sensor type: {self.sensor_type}")
 
 
-my_sensor = Sensor(config.get_sensor_type(), config.get_sensor_pin())
-
-
 @app.route("/data")
 def get_data():
-    sensor = 
+    sensor = Sensor(config.get_sensor_type(), config.get_sensor_pin())
     humidity, temperature = sensor.read_data()
-    room = config.get_room
+    room = config.get_room()
     data = {
         "room": room,
-        "temprature": temperature,
+        "temperature": temperature,
         "humidity": humidity,
     }
     return jsonify(data)
+    return data
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000)

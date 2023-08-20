@@ -1,15 +1,29 @@
-# Server side digital-twin setup for Raspberry Pi 
+# Flask API for Temperature Data Transmission
 
-Using a Raspberry Pi with a DHT11, this program will log temperature and humidity data to a local sqlite database. main.py will start the main server for logging data. app.py will open an api, so that you can get data from the raspberry. 
+This project implements a Flask API to transmit temperature data from a Raspberry Pi using a DHT11/DHT12/AM2302 sensor. The API provides temperature and humidity readings from the sensor, and it can be accessed by clients to retrieve the latest data.
 
-Requires:
-- Raspberry Pi Raspberry OS connected with DHT11 sensor (hardcoded to GPIO datapin 17 at the moment).
-- Adafruit_DHT python library. 
+## Features
 
-Install: 
-- In terminal type: `sudo pip3 install Adafruit_DHT`
-- In the config_db.py. Fill in the userdata fields on top of the document. Feel free to harcode the openweather_apikey or create a file in the project structure called "openweather_apikey.txt" and type in your personal api-key. You can get the api-key by regintering on https://openweathermap.org. 
+- Retrieves temperature and humidity readings from a DHT11/DHT12/AM2302 sensor connected to a Raspberry Pi.
+- Provides an API endpoint to fetch the latest temperature and humidity data.
+- Supports configuration via a JSON file for room, host, port, sensor type, and sensor pin.
 
-Run:
-- Start logging data to local sqlite3 database by running python3 main.py. 
-- Start api py running python3 app.py
+## Getting Started
+
+1. Clone this repository to your Raspberry Pi.
+2. Install the required Python packages using `pip`:
+
+   ```bash
+   pip install flask Adafruit_DHT
+3. Rename config_template.json to config.json. Change the configuration parameters as needed. 
+4. Run the flask server: 
+   ```bash
+   python3 app.py
+5. Access the API endpoint to retrieve temperature and humidity data.
+
+## API Endpoints
+- `/data:` Retrieves the latest temperature and humidity readings.
+
+## Dependencies
+- Flask: A lightweight Python web framework.
+- Adafruit_DHT: A Python library to interact with DHT sensors.

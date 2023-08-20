@@ -8,5 +8,4 @@
 *.pyo
 
 # User files
-humidtemp.db
-openweather_apikey.txt
+config.json
