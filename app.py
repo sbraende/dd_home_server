@@ -19,7 +19,7 @@ class Configuration():
             print(f"Cant decode JSON {error}")
 
     def get_room(self):
-        return self.room
+        return self.config["room"]
 
     def get_host(self):
         return self.config["host"]
