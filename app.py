@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 from flask import Flask, jsonify
 import Adafruit_DHT
 
@@ -12,11 +13,18 @@ SENSOR_TYPES = {
 
 class Configuration():
     def __init__(self, config_path):
+        self.config = self.get_config_file(config_path)
+
+    def get_config_file(self, config_path):
+        path = Path(config_path)
+        if not path.exists():
+            raise FileNotFoundError(f"Cannot find config file: {config_path}")
         try: 
             with open(config_path) as config_file:
-                self.config = json.load(config_file)
+                config = json.load(config_file)
+                return config
         except json.JSONDecodeError as error:
-            print(f"Cant decode JSON {error}")
+            raise ValueError(f"Cannot decode JSON in config file: {error}")
 
     def get_room(self):
         return self.config["room"]
@@ -76,7 +84,7 @@ def data_rute():
 
 
 def main():
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=5000, debug=True)
 
 
 if __name__ == "__main__":
