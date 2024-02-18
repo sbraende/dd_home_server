@@ -49,9 +49,13 @@ class Sensor():
 
     def read_data(self):
         if self.sensor_type in SENSOR_TYPES:
+            read_retries = 180
             humidity, temperature = Adafruit_DHT.read_retry(SENSOR_TYPES
                                                             [self.sensor_type],
-                                                            self.sensor_pin)
+                                                            self.sensor_pin, retries=read_retries)
+            if humidity is None and temperature is None:
+                raise ValueError(f"Could not get humidity and temprature after 
+                                 {read_retries} retries")
             return humidity, temperature
         else:
             raise ValueError(f"Unsupported sensor type: {self.sensor_type}")
